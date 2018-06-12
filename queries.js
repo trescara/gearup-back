@@ -22,6 +22,7 @@ module.exports = {
       return database('gear').delete().where('id', id)
     },
     readCategory(category){
-      return database('gear').where('category', category).first()
+      return database('gear').where('category', category)
+                                    .returning('*')
     }
 };
