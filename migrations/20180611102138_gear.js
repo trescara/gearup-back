@@ -3,6 +3,7 @@ exports.up = function (knex, Promise) {
     table.increments('id')
     table.text('gear_type')
     table.text('category')
+    table.text('description')
     table.text('owner')
     table.bool('available')
     table.integer('cost_per_day')
