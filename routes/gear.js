@@ -20,7 +20,17 @@ router.get("/:id", (request, response, next) => {
     queries.read(request.params.id)
     .then(gear => {
         gear
-            ? response.json({gear})
+            ? response.json({ gear })
+            : response.status(404).json({message: 'Not found'})
+    })
+    .catch(next)
+})
+
+router.get("/category/:category", (request, response, next) => {
+    queries.readCategory(request.params.category)
+    .then(gear => {
+        gear
+            ? response.json({ gear })
             : response.status(404).json({message: 'Not found'})
     })
     .catch(next)
