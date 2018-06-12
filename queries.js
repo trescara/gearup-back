@@ -24,5 +24,9 @@ module.exports = {
     readCategory(category){
       return database('gear').where('category', category)
                                     .returning('*')
-    }
+    },
+    readOwner(owner){
+      return database('gear').where('owner', owner)
+                                    .returning('*')
+    }    
 };

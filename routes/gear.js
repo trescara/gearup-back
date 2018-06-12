@@ -36,6 +36,16 @@ router.get("/category/:category", (request, response, next) => {
     .catch(next)
 })
 
+router.get("/user/:owner", (request, response, next) => {
+    queries.readOwner(request.params.owner)
+    .then(gear => {
+        gear
+            ? response.json({ gear })
+            : response.status(404).json({message: 'Not found'})
+    })
+    .catch(next)
+})
+
 
 router.post("/", (request, response, next) => {
     queries.create(request.body)
