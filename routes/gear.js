@@ -7,6 +7,13 @@ const cors = require('cors')
 const app = express()
 app.use(morgan('tiny'))
 
+function validItem(item) {
+    const hasCategory = typeof item.category == 'string' && item.category.trim() != ''
+    const hasType = typeof item.gear_type == 'string' && item.gear_type.trim() != ''
+    const hasDescription = typeof item.description == 'string' && item.description.trim() != ''
+    const hasImage = typeof item.image_url == 'string' && item.image_url.trim() != ''
+    return hasCategory && hasType && hasDescription && hasImage
+}
 
 router.get("/", (request, response, next) => {
     queries.list()
@@ -48,11 +55,13 @@ router.get("/user/:owner", (request, response, next) => {
 
 
 router.post("/", (request, response, next) => {
+    if(validItem(request.body)) {
     queries.create(request.body)
     .then(gear => {
         response.status(201).json({ gear })
-    })
-    .catch(next)
+    })} else {
+    next(new Error('Invalid Submission'))
+    }
 })
 
 router.delete("/:id", (request, response, next) => {
@@ -64,11 +73,13 @@ router.delete("/:id", (request, response, next) => {
 })
 
 router.put("/:id", (request, response, next) => {
+    if(validItem(request.body)) {
     queries.update(request.params.id, request.body)
     .then(gear => {
         response.json({ gear })
-    })
-    .catch(next)
+    })} else {
+    next(new Error('Invalid Submission'))
+    }
 })
 
 module.exports = router
